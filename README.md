@@ -1,9 +1,4 @@
-[![CI](https://github.com/tseemann/snp-dists/workflows/CI/badge.svg)](https://github.com/tseemann/snp-dists/actions)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/tseemann/snp-dists)](https://github.com/tseemann/snp-dists/releases)
-[![Bioconda downloads](https://img.shields.io/conda/dn/bioconda/snp-dists)](https://bioconda.github.io/recipes/snp-dists/README.html)
-[![License: GPLv3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Language: C99](https://img.shields.io/badge/Language-C99-orangered.svg)](https://en.wikipedia.org/wiki/C99)
-<!-- ![Zenodo](https://zenodo.org/badge/DOI/10.5281/zenodo.1411986.svg) -->
+Modified to count differences between IUPAC bases in addition to ACTG (but not N).
 
 # snp-dists
 
@@ -200,33 +195,7 @@ seq1        seq2        1
 seq1        seq3        2
 <snip>
 ```
-### `snp-dists -x INT` (stop counting after `INT` SNPs
-
-Once a distance between two samples becomes
-very large there is often not much point 
-keeping on counting. Th` -x` option allows you
-to "short-circuit" the counting. This can reduce
-computation time significantly on large
-alignment is you only care about small distance.
-
-## Issues
-
-Report bugs and give suggesions on the
-[Issues page](https://github.com/tseemann/snp-dists/issues)
-
-## Related software
-
-* [pairsnp](https://github.com/gtonkinhill/pairsnp)
-* [Disty](https://github.com/c2-d2/disty)
-* [Panito](https://github.com/sanger-pathogens/panito)
-* [pairwise_snp_differences](https://github.com/MDU-PHL/pairwise_snp_differences/blob/master/pairwise_snp_differences.Rmd)
 
 ## Licence
 
 [GPL Version 3](https://raw.githubusercontent.com/tseemann/snp-dists/master/LICENSE)
-
-## Authors
-
-* [Torsten Seemann](https://github.com/tseemann)
-* [Fabian Klötzl](https://github.com/kloetzl)
-* [Andrew J Page](https://github.com/andrewjpage)
