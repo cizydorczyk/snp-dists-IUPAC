@@ -147,9 +147,19 @@ int main(int argc, char* argv[])
     }
 
     // clean the sequence depending on -a option
+    //if (!allchars) {
+    //  for (char* s = seq[N]; *s; s++) {
+    //    if (*s != 'A' && *s != 'T' && *s != 'C' && *s != 'G') {
+    //      *s = IGNORE_CHAR;
+    //    }
+    //  }
+    //}
+    
+    // clean the sequence depending on -a option, including IUPAC bases
+    // Added April 13, 2026 by Conrad
     if (!allchars) {
       for (char* s = seq[N]; *s; s++) {
-        if (*s != 'A' && *s != 'T' && *s != 'C' && *s != 'G') {
+        if (!strchr("ACGTRYSWKMBDHV", *s)) {
           *s = IGNORE_CHAR;
         }
       }
