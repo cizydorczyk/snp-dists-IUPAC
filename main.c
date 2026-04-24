@@ -212,7 +212,7 @@ int main(int argc, char* argv[])
         size_t valid_sites = 0;
         size_t d = distance(seq[j], seq[i], L, maxdiff, &valid_sites);
         double p_dist = valid_sites > 0 ? (double)d / valid_sites : 0.0;
-        printf("%s%c%s%c%zu%c%zu%c%f\n", name[j], sep, name[i], sep, d, sep, valid_sites, sep, p_dist);
+        printf("%s%c%s%c%zu%c%zu%c%.15f\n", name[j], sep, name[i], sep, d, sep, valid_sites, sep, p_dist);
       }
     }
   }
