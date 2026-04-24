@@ -19,14 +19,25 @@ int cpus = 1;
 KSEQ_INIT(gzFile, gzread)
 
 //------------------------------------------------------------------------
-size_t distance(const char* restrict a, const char* restrict b, size_t L, size_t maxdiff)
+// size_t distance(const char* restrict a, const char* restrict b, size_t L, size_t maxdiff)
+// added Apr24, 2026 by Conrad
+size_t distance(const char* restrict a, const char* restrict b, size_t L, size_t maxdiff, size_t *valid_sites)
 {
   size_t diff=0;
+  // added Apr24, 2026 by Conrad
+  *valid_sites = 0;
   for (size_t i=0; i < L; i++) {
-    if (a[i] != b[i] && a[i] != IGNORE_CHAR && b[i] != IGNORE_CHAR) {
-      diff++;
-      if (diff >= maxdiff) return maxdiff;
-    }
+    // if (a[i] != b[i] && a[i] != IGNORE_CHAR && b[i] != IGNORE_CHAR) {
+    //   diff++;
+    //   if (diff >= maxdiff) return maxdiff;
+    // }
+    // added Apr24, 2026 by Conrad
+    if (a[i] != IGNORE_CHAR && b[i] != IGNORE_CHAR) {
+      (*valid_sites)++;
+      if (a[i] != b[i]) {
+        diff++;
+        if (diff >= maxdiff) return maxdiff;
+      }
   }
   return diff;
 }
@@ -186,14 +197,21 @@ int main(int argc, char* argv[])
   if (molten) {
     // "molten" format, one row per pair
     if (moltenheader) {
-      printf("sequence_1%csequence_2%cdistance\n", sep, sep);
+      // printf("sequence_1%csequence_2%cdistance\n", sep, sep);
+      // added Apr24, 2026 by Conrad
+      printf("sequence_1%csequence_2%csnp_distance%cvalid_sites%cp_distance\\\\n", sep, sep, sep, sep);
     }
 #pragma omp parallel for
     for (int j = 0; j < N; j++) {
       int start = lower ? j : 0;
       for (int i=start; i < N; i++) {
-        size_t d = distance(seq[j], seq[i], L, maxdiff);
-        printf("%s%c%s%c%zu\n", name[j], sep, name[i], sep, d);
+        // size_t d = distance(seq[j], seq[i], L, maxdiff);
+        // printf("%s%c%s%c%zu\n", name[j], sep, name[i], sep, d);
+        // added Apr24, 2026 by Conrad
+        size_t valid_sites = 0;
+        size_t d = distance(seq[j], seq[i], L, maxdiff, &valid_sites);
+        double p_dist = valid_sites > 0 ? (double)d / valid_sites : 0.0;
+        printf("%s%c%s%c%zu%c%zu%c%f\\\\n", name[j], sep, name[i], sep, d, sep, valid_sites, sep, p_dist);
       }
     }
   }
@@ -211,12 +229,28 @@ int main(int argc, char* argv[])
     // Output the distance matrix to stdout
     // (does full matrix, wasted computation i know)
 #pragma omp parallel for
+    //for (int j = 0; j < N; j++) {
+      //printf("%s", name[j]);
+      //int end = lower ? j+1 : N;
+      //for (int i=0; i < end; i++) {
+        // d[i] = distance(seq[j], seq[i], L, maxdiff);
+        //size_t d = distance(seq[j], seq[i], L, maxdiff);
+        //printf("%c%zu", sep, d);
+      //}
+      //printf("\n");
+    //}
+  //}
+  //free(d);
     for (int j = 0; j < N; j++) {
       printf("%s", name[j]);
       int end = lower ? j+1 : N;
       for (int i=0; i < end; i++) {
         // d[i] = distance(seq[j], seq[i], L, maxdiff);
-        size_t d = distance(seq[j], seq[i], L, maxdiff);
+        // size_t d = distance(seq[j], seq[i], L, maxdiff);
+        // printf("%c%zu", sep, d);
+        
+        size_t valid_sites = 0;
+        size_t d = distance(seq[j], seq[i], L, maxdiff, &valid_sites);
         printf("%c%zu", sep, d);
       }
       printf("\n");
