@@ -38,6 +38,7 @@ size_t distance(const char* restrict a, const char* restrict b, size_t L, size_t
         diff++;
         if (diff >= maxdiff) return maxdiff;
       }
+    }
   }
   return diff;
 }
